@@ -78,10 +78,10 @@ echo -e "${azul} ███████  ██    ██  █████ 
 echo -e "${azul}      ██  ██    ██  ██  ██   ██  ██    ██       ██   ██ ██ ${borra_colores}"
 echo -e "${azul} ███████   ██████   ██   ██  ██   ██████   ███████  ██   ██${borra_colores}"
 echo ""
-echo -e "${azul} Contacto:${amarillo} contacto@reparaciondesistemas.com"
-echo -e "           www.reparaciondesistemas.com${borra_colores}"
+echo -e "${azul} Contacto:${amarillo} sukigsx.mbsistemas@gmail.com${borra_colores}"
+echo -e "${azul} Web: ${amarillo}mbsistemas.ddns.net${borra_colores}"
 echo "-----------------------------------------------------------"
-echo -e '\e[0;34m\033[1m Nombre del script --> \e[0;33m\033[1m  backup_escritorio.sh \033[0m\e[0m'
+echo -e '\e[0;34m\033[1m Nombre del script --> \e[0;33m\033[1m  backup_escritorio.sukigsx \033[0m\e[0m'
 echo ""
 echo -e "${azul} Descripcion."
 echo -e "${amarillo} Realiza una copia/restaura configuracion de escritorio.${borra_colores}"
@@ -91,12 +91,15 @@ echo -e "${amarillo} Por seguridad la carpeta destino en local, la tiene que cre
 echo -e " Si es una carpeta/directorio de red, tendras que montarla en tu sistema, Opcion ( 5 ).${borra_colores}"
 echo ""
 echo -e "${azul}  [1]${borra_colores}  Introduce la ruta abosoluta de las copias de seguridad. ( Ruta seleccionada -->> ${rojo}$ruta_destino${borra_colores} )."
-echo -e "${azul}  [2] ${borra_colores} Listar las copias que tienes en el servidor."
-echo -e "${azul}  [3]${borra_colores}  Backup (Se eliminara la copia anterior).${borra_colores}"
-echo -e "${azul}  [4]${borra_colores}  Restaurar (Se restaura encima del que tienes).${borra_colores}"
-echo -e "${azul}  [5]${borra_colores}  Montar unidad de red, de forma temporal. (${verde} $unidad_red montado en /mnt/$nombre_destino.${borra_colores})"
 echo ""
-echo -e "${azul}  [6]${borra_colores}  Manual de ayuda."
+echo -e "${azul}  [2] ${borra_colores} Listar las copias que tienes en el servidor."
+echo -e "${azul}  [3]${borra_colores}  Backup (Se eliminara el backup anterior).${borra_colores}"
+echo -e "${azul}  [4]${borra_colores}  Restaurar (Se restaura encima del que tienes).${borra_colores}"
+echo -e "${azul}  [5]${borra_colores}  Borra un Backup."
+echo ""
+echo -e "${azul}  [6]${borra_colores}  Montar unidad de red, de forma temporal. (${verde} $unidad_red montado en /mnt/$nombre_destino${borra_colores})"
+echo ""
+echo -e "${azul}  [7]${borra_colores}  Manual de ayuda."
 echo ""
 echo -e "${azul} [99]${borra_colores}  Atras / Salir."
 echo ""
@@ -267,8 +270,59 @@ case $opcion in
             echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
             read pause;
         fi;;
+        
+    5)  #borra un backup
+        if [ $ruta_destino ] 2>/dev/null;
+        then
+            if [ -d $ruta_destino ];
+            then
+                clear;
+                echo -e "${verde} Lista de respaldos en $ruta_destino.${borra_colores}";
+                echo -e "${amarillo}"
+                echo -e "-- ${verde}Listado de backups${borra_colores} --"
+                echo -e "${amarillo}"
+                ls -l $ruta_destino | awk '{print "       " $9}';
+                echo -e "${borra_colores}"
+                read -p " Dime nombre de Backup a borrar -->> " borra_backup;
+                if [[ -d $ruta_destino/$borra_backup && $borra_backup ]] 2>/dev/null
+                then
+                    echo -e " ${amarillo}Se va a borrar el Backup ${rojo}$borra_backup ${amarillo}!${rojo}${borra_colores}"
+                    read -p " Estas seguro (S/N) ? -->> " SN
+                    if [[ $SN = "S" || $SN = "s" ]]
+                    then
+                        echo ""
+                        echo -e " Borrado ${rojo} $borra_backup ${borra_colores}"
+                        rm -r $ruta_destino/$borra_backup
+                        sleep 3
+                    else
+                        echo ""
+                        echo -e "${amarillo} No se borra nada. saliendo.${borra_colores}"
+                        sleep 3
+                    fi
+                else
+                    echo ""
+                    echo -e "${amarillo} El Backup ${rojo}$borra_backup${amarillo} no existe o lo has escrito mal....${borra_colores}"
+                    sleep 3
+                fi
+                
+            else
+                clear 
+                echo ""
+                echo "${amarillo} La ruta destino ${rojo}$ruta_destino${amarillo} no esta disponible";
+                echo ""
+                echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
+                read pausa;
+            fi;
+        else
+            clear
+            echo ""
+            echo -e "  ${amarillo}LA RUTA DE DESTINO NO ESTA DEFINIDA. Selecciona la opcion ( 1 ), para indicarla.${borra_colores}";
+            echo ""
+            echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
+            read pause;
+        fi;;
     
-    5)  #montar unidad temporal
+    6)  #montar unidad temporal
         #comprueba el softaware necesario, cifs-utils y smbclient
         which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null
         cifscreds=$?
@@ -303,8 +357,8 @@ case $opcion in
         echo -e "${azul}      ██  ██    ██  ██  ██   ██  ██    ██       ██   ██ ██ ${borra_colores}"
         echo -e "${azul} ███████   ██████   ██   ██  ██   ██████   ███████  ██   ██${borra_colores}"
         echo ""
-        echo -e "${azul} Contacto:${amarillo} contacto@reparaciondesistemas.com"
-        echo -e "           www.reparaciondesistemas.com${borra_colores}"
+        echo -e "${azul} Contacto:${amarillo} sukigsx.mbsistemas@gmail.com${borra_colores}"
+        echo -e "${azul} Web: ${amarillo}mbsistemas.ddns.net${borra_colores}"
         echo "-----------------------------------------------------------"
         echo -e "${azul}"
         echo " Funcionamiento."
@@ -325,7 +379,7 @@ case $opcion in
         echo -e "${amarillo}  Password           -->>${verde} NO TE LO MUESTRO ${borra_colores}"
         echo -e "${amarillo}  Carpeta destino    -->>${verde} $nombre_destino ${borra_colores}"
         echo ""
-        echo -ne "${azul} Es correpto (S/N) ? ${amarillo}-->>${borra_colores} "; read correcto
+        echo -ne "${azul} Es correpto (S/N en MAYUSCULA) ? ${amarillo}-->>${borra_colores} "; read correcto
         
         smbclient -U $unidad_usuario%$unidad_password -L $unidad_carpeta 0>/dev/null 2>/dev/null 1>/dev/null
         if [[ $? == 0 ]] && [[ $correcto = "S" ]] 2>/dev/null
@@ -355,7 +409,7 @@ case $opcion in
             read pause
         fi;;
 
-    6)  #manual de funcionamiento
+    7)  #manual de funcionamiento
         clear;
         echo "-----------------------------------------------------------------------------------------------------------------------------------------------"
         echo -e "|                                                                                                                                             |"
@@ -366,8 +420,8 @@ case $opcion in
         echo -e "|${azul}                          ███████         ██████         ██   ██        ██         ██████         ███████        ██   ██  ${borra_colores}                   |"
         echo -e "|                                                                                                                                             |"
         echo "-----------------------------------------------------------------------------------------------------------------------------------------------"
-        echo -e "-${verde}  Diseñado por sukigsx / Contacto: | contacto@reparaciondesistemas.com ${borra_colores} |                        Para mejor visualizacion, presiona F11.     -"
-        echo -e "-${verde}                                   | www.reparaciondesistemas.com     |         ${borra_colores}                 Control + C -->> finalizar script.          -"
+        echo -e "-${verde}  Diseñado por sukigsx / Contacto: | sukigsx.mbsistemas@gmail.com  | ${borra_colores}                            Para mejor visualizacion, presiona F11.     -"
+        echo -e "-${verde}                         Web       | mbsistemas.ddns.net           | ${borra_colores}                            Control + C -->> finalizar script.          -"
         echo "-----------------------------------------------------------------------------------------------------------------------------------------------"
         echo -e "-                                  ${azul}               MANUAL DE AYUDA DE backup_escritoio.sh  ${borra_colores}                                                    -";
         echo "-----------------------------------------------------------------------------------------------------------------------------------------------";
@@ -389,7 +443,10 @@ case $opcion in
         echo "-                     Esto realizara la restauracion automatica, eso quiere decir que si previamente no existe una copia                      -";
         echo "-                     o backup no la encontrara y no la podra restaurar.                                                                      -";
         echo "-                                                                                                                                             -";
-        echo -e "-${azul}         Opcion 5.${borra_colores}   Montar unidad de red de forma temporal.                                                                                 -";
+        echo -e "-${azul}         Opcion 5.${borra_colores}   Borrar un Backup.                                                                                                       -";
+        echo "-                     Te lista los backups que tienes y te pregunta cual quieres                                                              -";
+        echo "-                                                                                                                                             -";
+        echo -e "-${azul}         Opcion 6.${borra_colores}   Montar unidad de red de forma temporal.                                                                                 -";
         echo "-                     Esta opcion te permite montar una unidad de red en tu sistema para poder realizar un backup o                           -";
         echo "-                     restauracion en tu rscritorio, para ello tienes que saber:                                                              -";
         echo "-                         - Comprobara el software necesario (cifs-utils y smbclient), sino estan instalados, los instalara.                  -";
