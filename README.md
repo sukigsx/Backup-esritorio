@@ -23,7 +23,7 @@ Solo copia la configuracion, NO LOS DATOS.
 
 - Instalar paquete DEB desde linea de comando en la terminal,lo descarga, lo instala y despues borra el paquete DEB.
 
-      wget https://github.com/sukigsx/Backup-esritorio/raw/main/Backup-escritorio.deb; sudo dpkg -i Backup-escritoroio.deb; rm Backup-escritorio.deb
+      wget https://github.com/sukigsx/Backup-esritorio/raw/main/Backup-escritorio.deb; sudo dpkg -i Backup-escritorio.deb; rm Backup-escritorio.deb
       
  - Clonar el repositorio, desde la terminal. Dar permisos de ejecucion a todos los ficheros.
  
