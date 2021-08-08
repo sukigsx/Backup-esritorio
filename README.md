@@ -35,7 +35,7 @@ Solo copia la configuracion, NO LOS DATOS.
 ### Forma de ejecucion.
 - Si has clonado el repositorio y con permisos de ejecucion.
 
-      ./Backup-escritorio.sukigsx
+      ./Backup-escritorio.sukigsx.sh
 - Si has instalado el paquete. Lo encontraras en el lanzador.
      
  
