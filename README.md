@@ -1,5 +1,5 @@
 ---------
-## Backup-escritorio
+## Backup-escritorio.
 * Script desarrollado en bash
 *********************************************
 * Diseñado por SUKIGSX
