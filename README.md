@@ -19,7 +19,7 @@ Solo copia la configuracion, NO LOS DATOS.
 ### INSTALACION.
 
 #### Descargar e instalar el paquete DEB.
-- [Descargar el paque DEB](https://github.com/mbbsystem/Backup-esritorio/raw/main/Backup-escritorio.deb). Y lo puedes instalar con tu forma habitual.
+- [Descargar el paque DEB](https://github.com/sukigsx/Backup-esritorio/raw/main/Backup-escritorio.deb). Y lo puedes instalar con tu forma habitual.
 
 - Instalar paquete DEB desde linea de comando en la terminal,lo descarga, lo instala y despues borra el paquete DEB.
 
