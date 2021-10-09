@@ -3,7 +3,7 @@
 * Script desarrollado en bash
 *********************************************
 * Diseñado por SUKIGSX
-* Contacto: sukigsx.mbsistemas@gmail.com
+* Contacto: mbbsystem.proyectos@gmail.com
 *********************************************
 
 Este script esta pensado para realizar backup de la configuracion de tu escritorio.
@@ -15,20 +15,20 @@ Solo copia la configuracion, NO LOS DATOS.
 - Backup de tus lanzadores, tanto del escritorio como del menu.
 - El backup lo puedes realizar en red a un servidor o en local.
 - Backup de la configuracion asi como las ventanas y las barras etc...
- 
+
 ### INSTALACION.
 
 #### Descargar e instalar el paquete DEB.
-- [Descargar el paque DEB](https://github.com/sukigsx/Backup-esritorio/raw/main/Backup-escritorio.deb). Y lo puedes instalar con tu forma habitual.
+- [Descargar el paque DEB](https://github.com/mbbsystem/Backup-esritorio/raw/main/Backup-escritorio.deb). Y lo puedes instalar con tu forma habitual.
 
 - Instalar paquete DEB desde linea de comando en la terminal,lo descarga, lo instala y despues borra el paquete DEB.
 
-      wget https://github.com/sukigsx/Backup-esritorio/raw/main/Backup-escritorio.deb; sudo dpkg -i Backup-escritorio.deb; rm Backup-escritorio.deb
-      
+      wget https://github.com/mbbsystem/Backup-esritorio/raw/main/Backup-escritorio.deb; sudo dpkg -i Backup-escritorio.deb; rm Backup-escritorio.deb
+  
  - Clonar el repositorio, desde la terminal. Dar permisos de ejecucion a todos los ficheros.
- 
-       git clone https://github.com/sukigsx/Backup-esritorio.git
-     
+
+       git clone https://github.com/mbsystem/Backup-esritorio.git
+    
 #### Desistalar el paquete deb, desde el terminal.
      sudo dpkg -r backup-escritorio
 
@@ -37,7 +37,7 @@ Solo copia la configuracion, NO LOS DATOS.
 
       ./Backup-escritorio.sukigsx.sh
 - Si has instalado el paquete. Lo encontraras en el lanzador.
-     
- 
+  
+
 ### NOTA.
 Insisto. ¡¡ NO HACE BACKUP DE DATOS !!, solo de configuraciones.
