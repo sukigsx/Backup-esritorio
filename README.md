@@ -3,7 +3,7 @@
 * Script desarrollado en bash
 *********************************************
 * Diseñado por SUKIGSX
-* Contacto: mbbsystem.proyectos@gmail.com
+* Contacto: sukigsx.mbsistemas@gmail.com
 *********************************************
 
 Este script esta pensado para realizar backup de la configuracion de tu escritorio.
@@ -23,11 +23,11 @@ Solo copia la configuracion, NO LOS DATOS.
 
 - Instalar paquete DEB desde linea de comando en la terminal,lo descarga, lo instala y despues borra el paquete DEB.
 
-      wget https://github.com/mbbsystem/Backup-esritorio/raw/main/Backup-escritorio.deb; sudo dpkg -i Backup-escritorio.deb; rm Backup-escritorio.deb
+      wget https://github.com/sukigsx/Backup-esritorio/raw/main/Backup-escritorio.deb; sudo dpkg -i Backup-escritorio.deb; rm Backup-escritorio.deb
   
  - Clonar el repositorio, desde la terminal. Dar permisos de ejecucion a todos los ficheros.
 
-       git clone https://github.com/mbsystem/Backup-esritorio.git
+       git clone https://github.com/sukigsx/Backup-esritorio.git
     
 #### Desistalar el paquete deb, desde el terminal.
      sudo dpkg -r backup-escritorio
