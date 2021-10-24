@@ -1,17 +1,5 @@
 #!/bin/bash
 
-ruta_destino="VALOR REQUERIDO"
-unidad_red="VALOR NO REQUERIDO"
-
-#ruta_destino=VARIABLE_VACIAS
-
-#variable de nombre de usuario del sistema cargado
-usuario=$(whoami)
-#variable de hostname del sistema cargado
-maquina=$(hostname)
-#variable nombre destino
-nombre_destino="No Montado"
-
 #colores
 #forma de utilizar los colores en echo
 #echo -e "${rojo}Estes es el texto en rojo.${borra_colores"
@@ -36,41 +24,184 @@ then
     echo -e "${amarillo} Se procede a desmontar unidad y borrar la carpeta temporal con orden sudo umount.${borra_colores}"
     sudo umount /mnt/$nombre_destino 2>/dev/null
     sudo rmdir /mnt/$nombre_destino 2>/dev/null
-    echo ""
-    echo -e "${azul} ███████  █████  ██      ██ ███████ ███    ██ ██████   ██████ ${borra_colores}"
-    echo -e "${azul} ██      ██   ██ ██      ██ ██      ████   ██ ██   ██ ██    ██${borra_colores}"
-    echo -e "${azul} ███████ ███████ ██      ██ █████   ██ ██  ██ ██   ██ ██    ██${borra_colores}"
-    echo -e "${azul}      ██ ██   ██ ██      ██ ██      ██  ██ ██ ██   ██ ██    ██${borra_colores}"
-    echo -e "${azul} ███████ ██   ██ ███████ ██ ███████ ██   ████ ██████   ██████ ${borra_colores}"
-    echo ""
-    echo -e "${azul}      ██████  ██████   █████   ██████ ██  █████  ███████${borra_colores}"
-    echo -e "${azul}     ██       ██   ██ ██   ██ ██      ██ ██   ██ ██     ${borra_colores}"
-    echo -e "${azul}     ██   ███ ██████  ███████ ██      ██ ███████ ███████${borra_colores}"
-    echo -e "${azul}     ██    ██ ██   ██ ██   ██ ██      ██ ██   ██      ██${borra_colores}"
-    echo -e "${azul}      ██████  ██   ██ ██   ██  ██████ ██ ██   ██ ███████${borra_colores}"
-    echo ""
+    clear
+    figlet -c Gracias por 
+    figlet -c utilizar mi
+    figlet -c script
+    wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
     exit
 else
     clear
-    echo ""
-    echo -e "${azul} ███████  █████  ██      ██ ███████ ███    ██ ██████   ██████ ${borra_colores}"
-    echo -e "${azul} ██      ██   ██ ██      ██ ██      ████   ██ ██   ██ ██    ██${borra_colores}"
-    echo -e "${azul} ███████ ███████ ██      ██ █████   ██ ██  ██ ██   ██ ██    ██${borra_colores}"
-    echo -e "${azul}      ██ ██   ██ ██      ██ ██      ██  ██ ██ ██   ██ ██    ██${borra_colores}"
-    echo -e "${azul} ███████ ██   ██ ███████ ██ ███████ ██   ████ ██████   ██████ ${borra_colores}"
-    echo ""
-    echo -e "${azul}      ██████  ██████   █████   ██████ ██  █████  ███████${borra_colores}"
-    echo -e "${azul}     ██       ██   ██ ██   ██ ██      ██ ██   ██ ██     ${borra_colores}"
-    echo -e "${azul}     ██   ███ ██████  ███████ ██      ██ ███████ ███████${borra_colores}"
-    echo -e "${azul}     ██    ██ ██   ██ ██   ██ ██      ██ ██   ██      ██${borra_colores}"
-    echo -e "${azul}      ██████  ██   ██ ██   ██  ██████ ██ ██   ██ ███████${borra_colores}"
-    echo ""
+    figlet -c Gracias por 
+    figlet -c utilizar mi
+    figlet -c script
+    wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
     exit
 fi
 }
 
+clear 
+echo ""
+echo -e "${amarillo} Comprobando software necesario.${borra_colores}"
+echo ""
+
+## Vericica conexion a internet
+if ping -c1 google.com &>/dev/null;
+then
+    echo -e "- [${verde}ok${borra_colores}] Conexion a internet."
+else
+    clear
+    echo ""
+    echo -e "${rojo} NO se ha detectado conexion a internet, No se puede ejecutar el script.${borra_colores}"
+    echo -e "${rojo} Pulsa una tecla para continuar.${borra_colores}"
+    echo ""
+    read pasue
+    exit
+fi
+
+## verificar software necesario
+## wmctrl, para el control del tamaño del terminal
+which wmctrl 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
+wmctrl=$? #recojemos el 0 o 1 del resultado de which
+contador="1" #ponemos la variable contador a 1
+while [ $wmctrl -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
+do
+    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
+    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
+        echo ""
+        echo -e " ${rojo}NO se ha podido instalar (wmctrl), para el control de la pantalla del terminal."
+        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install wmctrl${rojo}"
+        echo -e " No se puede ejecutar el script.${borra_colores}"
+        echo ""
+        exit
+    else #intenta instalar
+        sudo apt install wmctrl -y 2>/dev/null 1>/dev/null 0>/dev/null
+        let "contador=contador+1" #incrementa la variable contador en 1
+        which wmctrl 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
+        wmctrl=$? ##recojemos el 0 o 1 del resultado de which
+    fi
+done
+echo -e "- [${verde}ok${borra_colores}] wmctrl, Control de pantalla."
+
+## figlet, para los baners
+which figlet 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
+figlet=$? #recojemos el 0 o 1 del resultado de which
+contador="1" #ponemos la variable contador a 1
+while [ $figlet -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
+do
+    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
+    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
+        echo ""
+        echo -e " ${rojo}NO se ha podido instalar (figlet), para los baners del script."
+        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install figlet${rojo}"
+        echo -e " No se puede ejecutar el script.${borra_colores}"
+        echo ""
+        exit
+    else #intenta instalar
+        sudo apt install figlet -y 2>/dev/null 1>/dev/null 0>/dev/null
+        let "contador=contador+1" #incrementa la variable contador en 1
+        which figlet 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
+        figlet=$? ##recojemos el 0 o 1 del resultado de which
+    fi
+done
+echo -e "- [${verde}ok${borra_colores}] figlet, Baners de terminal."
+
+# smbclient, para la restauracion
+which smbclient 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
+smbclient=$? #recojemos el 0 o 1 del resultado de which
+contador="1" #ponemos la variable contador a 1
+while [ $smbclient -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
+do
+    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
+    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
+        echo ""
+        echo -e " ${rojo}NO se ha podido instalar (smbclient), para la restauracion en red."
+        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install figlet${rojo}"
+        echo -e " No se puede ejecutar el script.${borra_colores}"
+        echo ""
+        exit
+    else #intenta instalar
+        sudo apt install smbclient -y 2>/dev/null 1>/dev/null 0>/dev/null
+        let "contador=contador+1" #incrementa la variable contador en 1
+        which smbclient 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
+        smbclient=$? ##recojemos el 0 o 1 del resultado de which
+    fi
+done
+echo -e "- [${verde}ok${borra_colores}] smbclient, Para la restauracion en red."
+
+# cifs-utils, para el montaje de la unidad con mount
+which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
+cifscreds=$? #recojemos el 0 o 1 del resultado de which
+contador="1" #ponemos la variable contador a 1
+while [ $cifscreds -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
+do
+    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
+    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
+        echo ""
+        echo -e " ${rojo}NO se ha podido instalar (cifscreds), para montar la unidad en red."
+        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install figlet${rojo}"
+        echo -e " No se puede ejecutar el script.${borra_colores}"
+        echo ""
+        exit
+    else #intenta instalar
+        sudo apt install cifs-utils -y 2>/dev/null 1>/dev/null 0>/dev/null
+        let "contador=contador+1" #incrementa la variable contador en 1
+        which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
+        cifscreds=$? ##recojemos el 0 o 1 del resultado de which
+    fi
+done
+echo -e "- [${verde}ok${borra_colores}] cifscreds (cifs-utils), Para montar la unidad en red."
+
+
+## diff, comando de comparar
+which diff 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
+diff=$? #recojemos el 0 o 1 del resultado de which
+contador="1" #ponemos la variable contador a 1
+while [ $diff -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
+do
+    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
+    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
+        echo ""
+        echo -e " ${rojo}NO se ha podido instalar (diff), para comparacion de ficheros."
+        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install diff${rojo}"
+        echo -e " No se puede ejecutar el script.${borra_colores}"
+        echo ""
+        exit
+    else #intenta instalar
+        sudo apt install diff -y 2>/dev/null 1>/dev/null 0>/dev/null
+        let "contador=contador+1" #incrementa la variable contador en 1
+        which diff 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
+        diff=$? ##recojemos el 0 o 1 del resultado de which
+    fi
+done
+echo -e "- [${verde}ok${borra_colores}] diff, Para comprara ficheros."
+
+#comprueba aztualiczacion del script
+
+
+
+echo ""
+echo -e " ${verde}Todo el software correcto.${borra_colores}"
+sleep 3
+
+
+#empieza lo gordo
+ruta_destino="VALOR REQUERIDO"
+unidad_red="VALOR NO REQUERIDO"
+
+#ruta_destino=VARIABLE_VACIAS
+
+#variable de nombre de usuario del sistema cargado
+usuario=$(whoami)
+#variable de hostname del sistema cargado
+maquina=$(hostname)
+#variable nombre destino
+nombre_destino="No Montado"
+
 while :
 do
+#maximiza la terminal.
+wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
 clear
 echo ""
 echo -e "${azul} ███████  ██    ██  ██   ██  ██  ██████    ███████  ██   ██${borra_colores}"
@@ -324,31 +455,6 @@ case $opcion in
         fi;;
     
     6)  #montar unidad temporal
-        #comprueba el softaware necesario, cifs-utils y smbclient
-        which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null
-        cifscreds=$?
-        while [ $cifscreds -gt 0 ]
-        do
-        echo -e "${rojo} Software necesario NO instalado.${borra_colores}"
-        echo -e "${amarillo} Instalando cifs-utils.${borra_colores}"
-        sleep 1
-        sudo apt install cifs-utils -y 2>/dev/null 1>/dev/null 0>/dev/null
-        which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null
-        cifscreds=$?
-        done
-        
-        which smbclient 2>/dev/null 1>/dev/null 0>/dev/null
-        smbclient=$?
-        while [ $smbclient -gt 0 ]
-        do
-        echo -e "${rojo} Software necesario NO instalado.${borra_colores}"
-        echo -e "${amarillo} Instalando smbclient.${borra_colores}"
-        sleep 1
-        sudo apt install smbclient -y 2>/dev/null 1>/dev/null 0>/dev/null
-        which smbclient 2>/dev/null 1>/dev/null 0>/dev/null
-        smbclient=$?
-        done
-        
         #comienza montar temporal
         clear
         echo ""
@@ -458,46 +564,9 @@ case $opcion in
         echo "-----------------------------------------------------------------------------------------------------------------------------------------------";
         read pause;;
         
-    99) 
-        if [ -d /mnt/$nombre_destino ] 2>/dev/null
-        then
-            clear
-            echo -e "${amarillo} Existe unidad montada en la ruta /mnt/$nombre_destino ${borra_colores}"
-            echo -e "${amarillo} Se procede a desmontar unidad y borrar la carpeta temporal con orden sudo umount.${borra_colores}"
-            sudo umount /mnt/$nombre_destino 2>/dev/null;
-            sudo rmdir /mnt/$nombre_destino 2>/dev/null;
-            echo ""
-            echo -e "${azul} ███████  █████  ██      ██ ███████ ███    ██ ██████   ██████ ${borra_colores}"
-            echo -e "${azul} ██      ██   ██ ██      ██ ██      ████   ██ ██   ██ ██    ██${borra_colores}"
-            echo -e "${azul} ███████ ███████ ██      ██ █████   ██ ██  ██ ██   ██ ██    ██${borra_colores}"
-            echo -e "${azul}      ██ ██   ██ ██      ██ ██      ██  ██ ██ ██   ██ ██    ██${borra_colores}"
-            echo -e "${azul} ███████ ██   ██ ███████ ██ ███████ ██   ████ ██████   ██████ ${borra_colores}"
-            echo ""
-            echo -e "${azul}      ██████  ██████   █████   ██████ ██  █████  ███████${borra_colores}"
-            echo -e "${azul}     ██       ██   ██ ██   ██ ██      ██ ██   ██ ██     ${borra_colores}"
-            echo -e "${azul}     ██   ███ ██████  ███████ ██      ██ ███████ ███████${borra_colores}"
-            echo -e "${azul}     ██    ██ ██   ██ ██   ██ ██      ██ ██   ██      ██${borra_colores}"
-            echo -e "${azul}      ██████  ██   ██ ██   ██  ██████ ██ ██   ██ ███████${borra_colores}"
-            echo ""
-            exit;
-        else
-            clear
-            echo ""
-            echo -e "${azul} ███████  █████  ██      ██ ███████ ███    ██ ██████   ██████ ${borra_colores}"
-            echo -e "${azul} ██      ██   ██ ██      ██ ██      ████   ██ ██   ██ ██    ██${borra_colores}"
-            echo -e "${azul} ███████ ███████ ██      ██ █████   ██ ██  ██ ██   ██ ██    ██${borra_colores}"
-            echo -e "${azul}      ██ ██   ██ ██      ██ ██      ██  ██ ██ ██   ██ ██    ██${borra_colores}"
-            echo -e "${azul} ███████ ██   ██ ███████ ██ ███████ ██   ████ ██████   ██████ ${borra_colores}"
-            echo ""
-            echo -e "${azul}      ██████  ██████   █████   ██████ ██  █████  ███████${borra_colores}"
-            echo -e "${azul}     ██       ██   ██ ██   ██ ██      ██ ██   ██ ██     ${borra_colores}"
-            echo -e "${azul}     ██   ███ ██████  ███████ ██      ██ ███████ ███████${borra_colores}"
-            echo -e "${azul}     ██    ██ ██   ██ ██   ██ ██      ██ ██   ██      ██${borra_colores}"
-            echo -e "${azul}      ██████  ██   ██ ██   ██  ██████ ██ ██   ██ ███████${borra_colores}"
-            echo ""
-            exit;
-        fi;; 
-
+    99) #salir/atras
+        ctrl_c;;
+        
     *)  
         echo ""
         echo -e "${rojo} Opcion No disponible en el menu principal.....${borra_colores}"
