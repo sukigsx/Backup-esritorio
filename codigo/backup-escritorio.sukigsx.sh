@@ -203,41 +203,38 @@ do
 #maximiza la terminal.
 wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
 clear
+echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
+echo -e "${verde}  Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
+echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
 echo ""
-echo -e "${azul} ███████  ██    ██  ██   ██  ██  ██████    ███████  ██   ██${borra_colores}"
-echo -e "${azul} ██       ██    ██  ██  ██   ██  ██        ██        ██ ██ ${borra_colores}"
-echo -e "${azul} ███████  ██    ██  █████    ██  ██   ███  ███████    ███  ${borra_colores}"
-echo -e "${azul}      ██  ██    ██  ██  ██   ██  ██    ██       ██   ██ ██ ${borra_colores}"
-echo -e "${azul} ███████   ██████   ██   ██  ██   ██████   ███████  ██   ██${borra_colores}"
+echo -e "${verde} Nombre del script --> backup-escritorio.sukigsx.sh ${borra_colores}"
 echo ""
-echo -e "${azul} Contacto:${amarillo} sukigsx.mbsistemas@gmail.com${borra_colores}"
-echo -e "${azul} Web: ${amarillo}mbsistemas.ddns.net${borra_colores}"
-echo "-----------------------------------------------------------"
-echo -e '\e[0;34m\033[1m Nombre del script --> \e[0;33m\033[1m  backup_escritorio.sukigsx.sh \033[0m\e[0m'
+echo -e "${verde} Descripcion.${borra_colores} Copia/restaura la configuracion de tu escritorio."
 echo ""
-echo -e "${azul} Descripcion."
-echo -e "${amarillo} Realiza una copia/restaura configuracion de escritorio.${borra_colores}"
-echo ""
-echo -e "${azul} Funcionamiento."
 echo -e "${amarillo} Por seguridad la carpeta destino en local, la tiene que crear el usuario."
 echo -e " Si es una carpeta/directorio de red, tendras que montarla en tu sistema, Opcion ( 5 ).${borra_colores}"
 echo ""
-echo -e "${azul}  [1]${borra_colores}  Introduce la ruta abosoluta de las copias de seguridad. ( Ruta seleccionada -->> ${rojo}$ruta_destino${borra_colores} )."
+echo -e "  0.${azul} Actualizar el script.${borra_colores}"
 echo ""
-echo -e "${azul}  [2] ${borra_colores} Listar las copias que tienes en el servidor."
-echo -e "${azul}  [3]${borra_colores}  Backup (Se eliminara el backup anterior).${borra_colores}"
-echo -e "${azul}  [4]${borra_colores}  Restaurar (Se restaura encima del que tienes).${borra_colores}"
-echo -e "${azul}  [5]${borra_colores}  Borra un Backup."
+echo -e "  1.${azul} Introduce la ruta abosoluta de las copias de seguridad. ( Ruta seleccionada -->> ${rojo}$ruta_destino${borra_colores} )."
 echo ""
-echo -e "${azul}  [6]${borra_colores}  Montar unidad de red, de forma temporal. (${verde} $unidad_red montado en /mnt/$nombre_destino${borra_colores})"
+echo -e "  2.${azul} Listar las copias que tienes en el servidor.${borra_colores}"
+echo -e "  3.${azul} Backup (Se eliminara el backup anterior).${borra_colores}"
+echo -e "  4.${azul} Restaurar (Se restaura encima del que tienes).${borra_colores}"
+echo -e "  5.${azul} Borra un Backup.${borra_colores}"
 echo ""
-echo -e "${azul}  [7]${borra_colores}  Manual de ayuda."
+echo -e "  6.${azul} Montar unidad de red, de forma temporal. (${verde} $unidad_red montado en /mnt/$nombre_destino${borra_colores})"
 echo ""
-echo -e "${azul} [99]${borra_colores}  Atras / Salir."
+echo -e "  7.${azul} Manual de ayuda.${borra_colores}"
+echo ""
+echo -e " 99.${azul} Atras / Salir.${borra_colores}"
 echo ""
 echo -n " Selecciona una opcion -->> "
 read opcion
 case $opcion in
+
+    
+
     1) #se introduce la variable ruta_detino
         read -p " Dime la ruta destino -->> " ruta_destino;
             if [[ -d $ruta_destino && !$ruta_destino ]];
@@ -397,7 +394,7 @@ case $opcion in
         else
             clear
             echo "";
-            echo -e " ${amarillo}LA RUTA DE DESTINO NO ESTA DEFINIDA. Selecciona la opcion ( 1 ), para indicarla.${borra_colores}                                                            -";
+            echo -e " ${amarillo}LA RUTA DE DESTINO NO ESTA DEFINIDA. Selecciona la opcion ( 1 ), para indicarla.${borra_colores}";
             echo "";
             echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
             read pause;
@@ -457,24 +454,17 @@ case $opcion in
     6)  #montar unidad temporal
         #comienza montar temporal
         clear
+        echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
+        echo -e "${verde}  Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
+        echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
         echo ""
-        echo -e "${azul} ███████  ██    ██  ██   ██  ██  ██████    ███████  ██   ██${borra_colores}"
-        echo -e "${azul} ██       ██    ██  ██  ██   ██  ██        ██        ██ ██ ${borra_colores}"
-        echo -e "${azul} ███████  ██    ██  █████    ██  ██   ███  ███████    ███  ${borra_colores}"
-        echo -e "${azul}      ██  ██    ██  ██  ██   ██  ██    ██       ██   ██ ██ ${borra_colores}"
-        echo -e "${azul} ███████   ██████   ██   ██  ██   ██████   ███████  ██   ██${borra_colores}"
+        echo -e "${verde} Nombre del script --> backup-escritorio.sukigsx.sh ${borra_colores}"
+        echo -e ""
+        echo -e "${verde} Funcionamiento.${borra_colores} Monta una unidad de red de forma TEMPORAL en tu distribucion de linux dentro de la ruta /mnt"
         echo ""
-        echo -e "${azul} Contacto:${amarillo} sukigsx.mbsistemas@gmail.com${borra_colores}"
-        echo -e "${azul} Web: ${amarillo}mbsistemas.ddns.net${borra_colores}"
-        echo "-----------------------------------------------------------"
-        echo -e "${azul}"
-        echo " Funcionamiento."
-        echo -e "${amarillo}"
-        echo " Monta una unidad de red de forma TEMPORAL en tu distribucion de linux dentro de la ruta /mnt"
-        echo ""
-        echo -e " ${azul}-${amarillo}  Te pedira la ruta a absoluta a montar, ej, //192.168.1.100/direcion_la_carpeta__montar."
-        echo -e " ${azul}-${amarillo}  Te pedira el nombre de usuario, ej oscar."
-        echo -e " ${azul}-${amarillo}  Te pedira el nombre de carpeta destino y se montara en /mnt/nombre_de_carpeta."
+        echo -e " ${azul} Te pedira la ruta a absoluta a montar, ej, //192.168.1.100/direcion_la_carpeta__montar."
+        echo -e " ${azul} Te pedira el nombre de usuario, ej oscar."
+        echo -e " ${azul} Te pedira el nombre de carpeta destino y se montara en /mnt/nombre_de_carpeta."
         echo -e "${borra_colores}"
         echo -ne "${azul} Introduce ${verde}UNIDAD DE RED${azul} a montar con su direccion absoluta >> ${borra_colores}"; read unidad_carpeta
         echo -ne "${azul} Dime ${verde}NOMBRE DE USUARIO${azul} de la unidad de red >> ${borra_colores}"; read unidad_usuario
@@ -517,51 +507,44 @@ case $opcion in
         fi;;
 
     7)  #manual de funcionamiento
-        clear;
-        echo "-----------------------------------------------------------------------------------------------------------------------------------------------"
-        echo -e "|                                                                                                                                             |"
-        echo -e "|${azul}                          ███████        ██    ██        ██   ██        ██         ██████         ███████        ██   ██ ${borra_colores}                    |"
-        echo -e "|${azul}                          ██             ██    ██        ██  ██         ██        ██              ██              ██ ██  ${borra_colores}                    |"
-        echo -e "|${azul}                          ███████        ██    ██        █████          ██        ██   ███        ███████          ███    ${borra_colores}                   |"
-        echo -e "|${azul}                               ██        ██    ██        ██  ██         ██        ██    ██             ██         ██ ██   ${borra_colores}                   |"
-        echo -e "|${azul}                          ███████         ██████         ██   ██        ██         ██████         ███████        ██   ██  ${borra_colores}                   |"
-        echo -e "|                                                                                                                                             |"
-        echo "-----------------------------------------------------------------------------------------------------------------------------------------------"
-        echo -e "-${verde}  Diseñado por sukigsx / Contacto: | sukigsx.mbsistemas@gmail.com  | ${borra_colores}                            Para mejor visualizacion, presiona F11.     -"
-        echo -e "-${verde}                         Web       | mbsistemas.ddns.net           | ${borra_colores}                            Control + C -->> finalizar script.          -"
-        echo "-----------------------------------------------------------------------------------------------------------------------------------------------"
-        echo -e "-                                  ${azul}               MANUAL DE AYUDA DE backup_escritoio.sukigsx.sh  ${borra_colores}                                            -";
-        echo "-----------------------------------------------------------------------------------------------------------------------------------------------";
-        echo -e "-${azul}         Opcion 1.${borra_colores}   Introduce la ruta de las copias de seguridad.                                                                           -";
-        echo "-                     Se refiere a que hay que introducir la ruta en donde buscara o realizara las copias de seguridad.                       -";
-        echo "-                     Puede ser una ubicacion en local o en red, si es en red hay que montar la ruta en el sistema con la opcion 5.           -";
-        echo "-                     El script comprobara la ruta indicada. El servidor de red tiene que tener habilitado el protocolo samba (smb).          -";
-        echo "-                                                                                                                                             -";
-        echo -e "-${azul}         Opcion 2.${borra_colores}   Listar las copias de seguridad                                                                                          -";
-        echo "-                     Realizara un ls sobre la ruta introducida en la opcion 1 y podras ver las copias de escritorio que                      -";
-        echo "-                     existan en esa ruta, tambien es donde realizara las nuevas copias.                                                      -";
-        echo "-                                                                                                                                             -";
-        echo -e "-${azul}         Opcion 3.${borra_colores}   Realizar copia o backup.                                                                                                -";
-        echo "-                     Este pasao creara una copia de todos los datos de tu escritorio a la ruta indicada en opcion 1                          -";
-        echo "-                     colocandole en nombre de la maquina y seguido el nombre de usuario como se puedes ver en el                             -";
-        echo "-                     ejemplo /tmp/amd-pc_de_sukigsx .                                                                                        -";
-        echo "-                                                                                                                                             -";
-        echo -e "-${azul}         Opcion 4.${borra_colores}   Restaurar copia o backup.                                                                                               -";
-        echo "-                     Esto realizara la restauracion automatica, eso quiere decir que si previamente no existe una copia                      -";
-        echo "-                     o backup no la encontrara y no la podra restaurar.                                                                      -";
-        echo "-                                                                                                                                             -";
-        echo -e "-${azul}         Opcion 5.${borra_colores}   Borrar un Backup.                                                                                                       -";
-        echo "-                     Te lista los backups que tienes y te pregunta cual quieres                                                              -";
-        echo "-                                                                                                                                             -";
-        echo -e "-${azul}         Opcion 6.${borra_colores}   Montar unidad de red de forma temporal.                                                                                 -";
-        echo "-                     Esta opcion te permite montar una unidad de red en tu sistema para poder realizar un backup o                           -";
-        echo "-                     restauracion en tu rscritorio, para ello tienes que saber:                                                              -";
-        echo "-                         - Comprobara el software necesario (cifs-utils y smbclient), sino estan instalados, los instalara.                  -";
-        echo "-                         - La ruta absoluta de tu servidor, ej //192.168.0.1/servidor/copia_escritorio                                       -";
-        echo "-                         - El nombre de usuario del servidor, ej pepito                                                                      -";
-        echo "-                         - La password del servidor y tener permisos, ej 12345                                                               -";
-        echo "-                         - Y la direccion de la carpeta destino, en donde se montara en tu sistema. ej //tmp/copia/                          -";
-        echo "-----------------------------------------------------------------------------------------------------------------------------------------------";
+        clear
+        echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
+        echo -e "${verde}  Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
+        echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
+        echo ""
+        echo -e "MANUAL DE AYUDA";
+        echo ""
+        echo -e "${azul}Opcion 0.${borra_colores} Actualiza el script."
+        echo ""
+        echo -e "${azul}Opcion 1.${borra_colores} Introduce la ruta de las copias de seguridad.";
+        echo "          Se refiere a que hay que introducir la ruta en donde buscara o realizara las copias de seguridad.";
+        echo "          Puede ser una ubicacion en local o en red, si es en red hay que montar la ruta en el sistema con la opcion 5.";
+        echo "          El script comprobara la ruta indicada. El servidor de red tiene que tener habilitado el protocolo samba (smb).";
+        echo "";
+        echo -e "${azul}Opcion 2.${borra_colores} Listar las copias de seguridad.";
+        echo "          Realizara un ls sobre la ruta introducida en la opcion 1 y podras ver las copias de escritorio que";
+        echo "          existan en esa ruta, tambien es donde realizara las nuevas copias.";
+        echo "";
+        echo -e "${azul}Opcion 3.${borra_colores} Realizar copia o backup.";
+        echo "          Este pasao creara una copia de todos los datos de tu escritorio a la ruta indicada en opcion 1";
+        echo "          colocandole en nombre de la maquina y seguido el nombre de usuario como se puedes ver en el";
+        echo "          ejemplo /tmp/amd-pc_de_sukigsx.";
+        echo "";
+        echo -e "${azul}Opcion 4.${borra_colores} Restaurar copia o backup.";
+        echo "          Esto realizara la restauracion automatica, eso quiere decir que si previamente no existe una copia";
+        echo "          o backup no la encontrara y no la podra restaurar.";
+        echo "";
+        echo -e "${azul}Opcion 5.${borra_colores} Borrar un Backup.";
+        echo "          Te lista los backups que tienes y te pregunta cual quieres.";
+        echo "";
+        echo -e "${azul}Opcion 6.${borra_colores} Montar unidad de red de forma temporal.";
+        echo "          Esta opcion te permite montar una unidad de red en tu sistema para poder realizar un backup o";
+        echo "          restauracion en tu rscritorio, para ello tienes que saber:";
+        echo "              - Comprobara el software necesario (cifs-utils y smbclient), sino estan instalados, los instalara.";
+        echo "              - La ruta absoluta de tu servidor, ej //192.168.0.1/servidor/copia_escritorio.";
+        echo "              - El nombre de usuario del servidor, ej pepito.";
+        echo "              - La password del servidor y tener permisos, ej 12345.";
+        echo "              - Y la direccion de la carpeta destino, en donde se montara en tu sistema. ej //tmp/copia/.";
         read pause;;
         
     99) #salir/atras
