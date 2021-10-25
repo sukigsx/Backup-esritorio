@@ -233,7 +233,36 @@ echo -n " Selecciona una opcion -->> "
 read opcion
 case $opcion in
 
-    
+    if [ -e /usr/bin/backup-escritorio.sukigsx.sh ] #comprueba si se ha instalado el script con el deb, comprobando el fichero /usr/bin/inicio.ocamlfuse.sh
+        then
+            ruta="/usr/bin"
+            cd /tmp
+            mkdir temporal_update
+            git clone https://github.com/sukigsx/Googledrive-ocamlfuse.git /tmp/temporal_update
+            cd /tmp/temporal_update/codigo/
+            sudo chmod +x $ruta/*.sukigsx.sh
+            sudo cp -r /tmp/temporal_update/codigo/* $ruta
+            sudo rm -r /tmp/temporal_update
+            clear
+            echo "";
+            echo -e "${verde} Script actualizado, tienes que reiniciar el script para ver los cambios.${borra_colores}";
+            echo "";
+            ctrl_c;
+        else
+            ruta=$(pwd)
+            cd /tmp
+            mkdir temporal_update
+            git clone https://github.com/sukigsx/Googledrive-ocamlfuse.git /tmp/temporal_update
+            cd /tmp/temporal_update/codigo/
+            sudo chmod +x $ruta/*.sukigsx.sh
+            sudo cp -r /tmp/temporal_update/codigo/* $ruta
+            sudo rm -r /tmp/temporal_update
+            clear
+            echo "";
+            echo -e "${verde} Script actualizado, tienes que reiniciar el script para ver los cambios.${borra_colores}";
+            echo "";
+            ctrl_c;
+        fi;;
 
     1) #se introduce la variable ruta_detino
         read -p " Dime la ruta destino -->> " ruta_destino;
