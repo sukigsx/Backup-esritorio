@@ -210,6 +210,8 @@ echo ""
 echo -e " ${verde}Todo el software correcto.${borra_colores}"
 sleep 3
 
+
+
 #empieza lo gordo
 ruta_destino="VALOR REQUERIDO"
 unidad_red="VALOR NO REQUERIDO"
