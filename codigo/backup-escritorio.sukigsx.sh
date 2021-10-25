@@ -233,7 +233,8 @@ echo -n " Selecciona una opcion -->> "
 read opcion
 case $opcion in
 
-    if [ -e /usr/bin/backup-escritorio.sukigsx.sh ] #comprueba si se ha instalado el script con el deb, comprobando el fichero /usr/bin/inicio.ocamlfuse.sh
+    0)  #actualiza el script
+        if [ -e /usr/bin/backup-escritorio.sukigsx.sh ] #comprueba si se ha instalado el script con el deb, comprobando el fichero /usr/bin/inicio.ocamlfuse.sh
         then
             ruta="/usr/bin"
             cd /tmp
@@ -264,7 +265,7 @@ case $opcion in
             ctrl_c;
         fi;;
 
-    1) #se introduce la variable ruta_detino
+    1)  #se introduce la variable ruta_detino
         read -p " Dime la ruta destino -->> " ruta_destino;
             if [[ -d $ruta_destino && !$ruta_destino ]];
             then
