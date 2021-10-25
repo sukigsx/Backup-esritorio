@@ -60,6 +60,29 @@ else
 fi
 
 ## verificar software necesario
+## git, para la actualizacion del script
+which git 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
+git=$? #recojemos el 0 o 1 del resultado de which
+contador="1" #ponemos la variable contador a 1
+while [ $git -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
+do
+    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
+    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
+        echo ""
+        echo -e " ${rojo}NO se ha podido instalar (git), para la actualizacion del script."
+        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install git${rojo}"
+        echo -e " No se puede ejecutar el script.${borra_colores}"
+        echo ""
+        exit
+    else #intenta instalar
+        sudo apt install git -y 2>/dev/null 1>/dev/null 0>/dev/null
+        let "contador=contador+1" #incrementa la variable contador en 1
+        which git 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
+        git=$? ##recojemos el 0 o 1 del resultado de which
+    fi
+done
+echo -e "- [${verde}ok${borra_colores}] Git, Para actualizar script."
+
 ## wmctrl, para el control del tamaño del terminal
 which wmctrl 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
 wmctrl=$? #recojemos el 0 o 1 del resultado de which
