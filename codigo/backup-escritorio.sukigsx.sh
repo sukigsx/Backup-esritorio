@@ -238,7 +238,7 @@ case $opcion in
             ruta="/usr/bin"
             cd /tmp
             mkdir temporal_update
-            git clone https://github.com/sukigsx/Googledrive-ocamlfuse.git /tmp/temporal_update
+            git clone https://github.com/sukigsx/Backup-esritorio.git /tmp/temporal_update
             cd /tmp/temporal_update/codigo/
             sudo chmod +x $ruta/*.sukigsx.sh
             sudo cp -r /tmp/temporal_update/codigo/* $ruta
@@ -252,7 +252,7 @@ case $opcion in
             ruta=$(pwd)
             cd /tmp
             mkdir temporal_update
-            git clone https://github.com/sukigsx/Googledrive-ocamlfuse.git /tmp/temporal_update
+            git clone https://github.com/sukigsx/Backup-esritorio.git /tmp/temporal_update
             cd /tmp/temporal_update/codigo/
             sudo chmod +x $ruta/*.sukigsx.sh
             sudo cp -r /tmp/temporal_update/codigo/* $ruta
