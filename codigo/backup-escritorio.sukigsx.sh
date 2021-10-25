@@ -248,6 +248,7 @@ case $opcion in
             echo "";
             echo -e "${verde} Script actualizado, tienes que reiniciar el script para ver los cambios.${borra_colores}";
             echo "";
+            seelp 2
             ctrl_c;
         else
             ruta=$(pwd)
@@ -262,6 +263,7 @@ case $opcion in
             echo "";
             echo -e "${verde} Script actualizado, tienes que reiniciar el script para ver los cambios.${borra_colores}";
             echo "";
+            sleep 2
             ctrl_c;
         fi;;
 
