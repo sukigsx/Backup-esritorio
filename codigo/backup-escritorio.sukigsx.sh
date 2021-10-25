@@ -199,7 +199,7 @@ else
     diff /tmp/com_update/codigo/backup-escritorio.sukigsx.sh $ruta/backup-escritorio.sukigsx.sh 2>/dev/null 1>/dev/null 0>/dev/null
     if [ $? = "0" ] 2>/dev/null 1>/dev/null 0>/dev/null
     then
-        echo -e "- [${verde}ok${borra_colores}] script, esta actualizado."
+        echo -e "- [${verde}ok${borra_colores}] script, esta actualizado00000000000000."
     else
         echo -e "- [${rojo}XX${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 3
     fi
