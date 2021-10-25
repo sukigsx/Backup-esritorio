@@ -19,8 +19,8 @@ Description: Realiza backup de la configuracion de tu escritorio.
 <</CTRL>>
 <<FILES>>
 1
-/home/sukigsx/Documentos/GitHub/Backup-esritorio/codigo/backup-escritorio.sukigsx.sh* -> backup-escritorio.sukigsx.sh -> /usr/bin
 /home/sukigsx/Documentos/GitHub/Backup-esritorio/iconos/backup-escritorio.ico* -> backup-escritorio.ico -> /usr/share/icons/backup-escritorio/
+/home/sukigsx/Documentos/GitHub/Backup-esritorio/codigo/backup-escritorio.sukigsx.sh* -> backup-escritorio.sukigsx.sh -> /usr/bin
 <</FILES>>
 <<SCRIPTS>>
 <<PREINST>>
@@ -127,7 +127,7 @@ echo ""
 1
 Name=Backup-escritorio
 Version=1.0
-Exec=sudo bash /usr/bin/backup-escritorio.sukigsx.sh
+Exec=bash /usr/bin/backup-escritorio.sukigsx.sh
 Comment=--  Realiza backup de la configuracion de tu escritorio. --
 Icon=/usr/share/icons/backup-escritorio/backup-escritorio.ico
 Type=Application
