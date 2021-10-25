@@ -343,6 +343,8 @@ case $opcion in
                 echo -e " ${amarillo}La carpeta/directorio${rojo} $ruta_destino${amarillo}.${rojo} NO EXISTE${borra_colores}";
                 echo -e " ${amarillo}Si la ruta es local, creala y ejecuta el script de nuevo.${borra_colores}";
                 echo -e " ${amarillo}Si la ruta es de red, posiblemente no ete montada la unidad.${borra_colores}";
+                echo ""
+                echo -e " ${amarillo}Por seguridad, el usuario tiene que crear la carpeta/directorio.${borra_colores}"
                 echo "";
                 ruta_destino="VALOR REQUERIDO"
                 echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
