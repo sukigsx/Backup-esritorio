@@ -207,7 +207,7 @@ else
 fi
 
 echo ""
-echo -e " ${verde}Todo el software correcto0000000000.${borra_colores}"
+echo -e " ${verde}Todo el software correcto.${borra_colores}"
 sleep 3
 
 #empieza lo gordo
