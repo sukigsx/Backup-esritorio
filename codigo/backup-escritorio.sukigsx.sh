@@ -17,13 +17,13 @@ trap ctrl_c INT
 function ctrl_c()
 {
 clear
-if [ -d /mnt/$nombre_destino ]
+if [ -d $ruta_destino ]
 then
     clear
     echo -e "${amarillo} Existe unidad montada en la ruta /mnt/$nombre_destino ${borra_colores}"
     echo -e "${amarillo} Se procede a desmontar unidad y borrar la carpeta temporal con orden sudo umount.${borra_colores}"
-    sudo umount /mnt/$nombre_destino 2>/dev/null
-    sudo rmdir /mnt/$nombre_destino 2>/dev/null
+    sudo umount $ruta_destino 2>/dev/null
+    sudo rmdir $ruta_destino 2>/dev/null
     clear
     figlet -c Gracias por 
     figlet -c utilizar mi
@@ -40,164 +40,249 @@ else
 fi
 }
 
-clear 
+#funcion de configuracion del script
+function config_backup_escritorio()
+{
+wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+while :
+do
+clear
 echo ""
-echo -e "${amarillo} Comprobando software necesario.${borra_colores}"
+echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
+echo -e "${verde} Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
+echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
+echo -e "${verde} Nombre del script --> backup-escritorio.sukigsx.sh ${borra_colores}"
 echo ""
+echo -e "${verde} Descripcion.${borra_colores} Copia/restaura la configuracion de tu escritorio."
+echo -e ""
+echo -e " Configuracion del script"
+echo -e ""
+echo -e "  1. ${azul}Copia de seguridad en local.${borra_colores}"
+echo -e "  2. ${azul}Copia de seguridad en red por samba.${borra_colores}"
+echo -e ""
+echo -e " 90. ${azul}Ayuda de configuracion.${borra_colores}"
+echo -e " 99. ${azul}Salir.${borra_colores}"
+echo -e ""
+read -p " Seleciona una opcion -> " opcion
+case $opcion in
+    1)  #copia de seguridad en local
+        echo -e ""
+        read -p " Dime la carpeta/directorio destino (/home/$(whoami)/carpeta_destino) -> " carpeta_destino;
+            if [ -d /home/$(whoami)/$carpeta_destino ];
+            then
+                echo ""
+                echo -e "${azul} Ruta destino -->>${verde} /home/$(whoami)/$carpeta_destino ${borra_colores}";
+                echo -e "${azul} Usuario ------->>${verde} $(whoami) ${borra_colores}";
+                echo -e "${azul} Maquina ------->>${verde} $(hostname) ${borra_colores}";
+                echo ""
+                read -p " Es correcto (S/N) -->> " correcto;
+                    if [[ $correcto = "S" || $correcto = "s" ]] #si es correcto entra en el then
+                    then 
+                        #borra y crea el fichero de configuracion
+                        rm config_backup_escritorio 2>/dev/null 1>/dev/null 0>/dev/null
+                        echo "ruta_destino=/home/$(whoami)/$carpeta_destino" >> config_backup_escritorio;
+                        echo "usuario=$(whoami)" >> config_backup_escritorio
+                        echo "maquina=$(hostname)" >> config_backup_escritorio
+                        source config_backup_escritorio
+                        break
+                    else
+                        clear
+                        echo -e ""
+                        echo -e " ${amarillo}Se cancela la configuracion, ingresa de nuevo la nueva ruta.${borra_colores}";
+                        echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
+                        read pause;
+                        source config_backup_escritorio
+                    fi
+            else
+                clear
+                echo "";
+                echo -e " ${amarillo}La carpeta/directorio${rojo} /home/$(whoami)/$carpeta_destino${amarillo}.${rojo} NO EXISTE${borra_colores}";
+                echo -e "";
+                read -p " ¿ Quieres crearla (s/n) ? -> " sino
+                if [[ $sino = "s" || $sino = "S" ]]
+                then
+                    mkdir /home/$(whoami)/$carpeta_destino
+                    echo "ruta_destino=/home/$(whoami)/$carpeta_destino" >> config_backup_escritorio;
+                    echo "usuario=$(whoami)" >> config_backup_escritorio
+                    echo "maquina=$(hostname)" >> config_backup_escritorio
+                    source config_backup_escritorio
+                    break
+                else
+                    echo -e ""
+                    echo -e "${amarillo} Perfecto, regresamos a la configuracion.${borra_colores}"
+                    sleep 2
+                fi
+                
+            fi
+        ;;
+        
+    2)  #copia de sefuridad en unidad_red
+        #comienza montar temporal
+        clear
+        echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
+        echo -e "${verde}  Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
+        echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
+        echo ""
+        echo -e "${verde} Nombre del script --> backup-escritorio.sukigsx.sh ${borra_colores}"
+        echo -e ""
+        echo -e "${verde} Funcionamiento.${borra_colores} Monta una unidad de red de forma TEMPORAL en tu distribucion de linux dentro de la ruta /mnt"
+        echo ""
+        echo -e " ${amarillo} Te pedira la ruta a absoluta a montar, ej, //192.168.1.100/direcion_la_carpeta__montar."
+        echo -e " ${amarillo} Te pedira el nombre de usuario del servidor samba, ej oscar."
+        echo -e " ${amarillo} Te pedira el nombre de carpeta destino del servidor samba y se montara en /mnt/nombre_de_carpeta."
+        echo -e "${borra_colores}"
+        echo -ne "${azul} Introduce ${verde}DIRECCION DE CARPETA DEL SERVIDOR SAMBA${azul} a montar con su direccion absoluta >> ${borra_colores}"; read direccion_red
+        echo -ne "${azul} Dime ${verde}NOMBRE DE USUARIO DEL SERVIDOR SAMBA${azul} de la unidad de red >> ${borra_colores}"; read usuario_red
+        echo -ne "${azul} Asigna ${verde}NOMBRE DE CARPETA${azul} para destino /mnt >> ${borra_colores}"; read  ruta_destino
+        echo ""
+        echo -e "${amarillo}  Direccion de servidor samba a montar. -->>${verde} $direccion_red ${borra_colores}"
+        echo -e "${amarillo}  Usuario del servidor samba.           -->>${verde} $usuario_red ${borra_colores}"
+        echo -e "${amarillo}  Carpeta destino.                      -->>${verde} $ruta_destino ${borra_colores}"
+        echo ""
+        echo -ne "${azul} Es correpto (s/n) ? ${amarillo}-->>${borra_colores} "; read correcto
+        if [[ $correcto = "S" || $correcto = "s" ]]
+        then
+            rm config_backup_escritorio 2>/dev/null 1>/dev/null 0>/dev/null
+            echo "red=1" >> config_backup_escritorio
+            echo "direccion_red=$direccion_red" >> config_backup_escritorio
+            echo "usuario_red=$usuario_red" >> config_backup_escritorio
+            echo "ruta_destino=/mnt/$ruta_destino" >> config_backup_escritorio
+            echo "usuario=$(whoami)" >> config_backup_escritorio
+            echo "maquina=$(hostname)" >> config_backup_escritorio
+            source config_backup_escritorio
+            wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+            echo ""
+            echo -e "${amarillo}Contraseña del servidor samba.${borra_colores}"
+            sudo mkdir $ruta_destino #2>/dev/null 1>/dev/null 0>/dev/null
+            sudo mount -t cifs $direccion_red $ruta_destino -o user=$usuario_red,uid=$usuario_red,gid=$usuario_red #2>/dev/null 1>/dev/null 0>/dev/null
+            montado_correcto=$?
+            if [ $montado_correcto = "1" ]
+            then
+                sudo umount $ruta_destino 2>/dev/null
+                sudo rmdir $ruta_destino 2>/dev/null
+                rm config_backup_escritorio
+                echo -e ""
+                echo -e "${rojo} No se ha podido conectar con el servidor samba.${borra_colores}"
+                echo -e "${amarillo} Repite el proceso.${borra_colores}"
+                echo -e ""
+                sleep 4
+            else
+                break
+            fi
+                       
+        else
+            echo -e ""
+            echo -e "${amarillo} Todo cancelado, repite el proceso.${borra_colores}"
+            sleep 2
+        fi
+        ;;
+        
+    90) #ayuda de configuracion
+        clear
+        echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
+        echo -e "${verde}  Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
+        echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
+        echo ""
+        echo -e "MANUAL DE AYUDA";
+        echo ""
+        echo -e "${azul}Opcion 1.${borra_colores} Copia de seguridad en local.";
+        echo "          Te pedira el nombre de la carpeta/directorio para realizar los respaldos de tu configuracion de escritorio.";
+        echo "          Si no existe la creara en el home de tu usuario y si existe la utilizara.";
+        echo "          Ejemplo, (/home/tu_usuario/carpeta_destino)."
+        echo "";
+        echo -e "${azul}Opcion 2.${borra_colores} Copia de seguridad en red por servidor samba.";
+        echo "          Tienes que disponer de acceso a tu servidor por medio de conexion (samba)";
+        echo "          Seguidamente te pedira los datos necesarios para poner conectar al servidor samba, que son los siguientes:";
+        echo "              - La ruta de donde se encuentra el servidor en tu red, incluyendo el camino a la carpeta de tu servidor."
+        echo "                  Ejemplo, (//192.168.1.100/carpeta/carpeta_destino)"
+        echo "              - El nombre de usuario que tiene acceso a tu servidor samba."
+        echo "              - Y por ultimo tiene que montar esa carpeta de tu servidor samba en una carpeta de tu linux."
+        echo "                  Por defecto sera en /mnt. Asi que te pedira el nombre de carpeta destino."
+        echo "";
+        echo -e "${azul} Nota.${borra_colores} "
+        echo -e "${azul}Opcion 90.${borra_colores} Ayuda, lo que estas viendo.";
+        echo "";
+        echo -e "${azul}Opcion 99.${borra_colores} Salir/atras.";
+        echo "";
+        read pause
+        ;;
+        
+    99) # salir
+        ctrl_c
+        ;;
+    
+    *)  #opcion no valida
+        echo -e "${rojo} Opcion No disponible en el menu principal.....${borra_colores}"
+        echo -e "${amarillo} Pulsa una tecla para continuar o ( control + c ) salir.${borra_colores}"
+        read pause;;
+        
+esac
+done
+}
 
+
+clear
+echo -e ""
+echo -e "${verde} Verificando software necesario.${borra_colores}"
+echo -e ""
 ## Vericica conexion a internet
-if ping -c1 google.com &>/dev/null;
-then
-    echo -e "- [${verde}ok${borra_colores}] Conexion a internet."
-else
-    clear
-    echo ""
-    echo -e "${rojo} NO se ha detectado conexion a internet, No se puede ejecutar el script.${borra_colores}"
-    echo -e "${rojo} Pulsa una tecla para continuar.${borra_colores}"
-    echo ""
-    read pasue
-    exit
-fi
-
-## verificar software necesario
-## git, para la actualizacion del script
-which git 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
-git=$? #recojemos el 0 o 1 del resultado de which
-contador="1" #ponemos la variable contador a 1
-while [ $git -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
-do
-    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
-    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
-        echo ""
-        echo -e " ${rojo}NO se ha podido instalar (git), para la actualizacion del script."
-        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install git${rojo}"
-        echo -e " No se puede ejecutar el script.${borra_colores}"
-        echo ""
-        exit
-    else #intenta instalar
-        sudo apt install git -y 2>/dev/null 1>/dev/null 0>/dev/null
-        let "contador=contador+1" #incrementa la variable contador en 1
-        which git 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
-        git=$? ##recojemos el 0 o 1 del resultado de which
+    if ping -c1 google.com &>/dev/null;
+    then
+        echo -e " [${verde}ok${borra_colores}] Conexion a internet."
+        conexion="si" #sabemos si tenemos conexion a internet o no
+    else
+        echo -e " [${rojo}XX${borra_colores}] Conexion a internet."
+        conexion="no" #sabemos si tenemos conexion a internet o no
     fi
-done
-echo -e "- [${verde}ok${borra_colores}] Git, Para actualizar script."
-
-## wmctrl, para el control del tamaño del terminal
-which wmctrl 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
-wmctrl=$? #recojemos el 0 o 1 del resultado de which
-contador="1" #ponemos la variable contador a 1
-while [ $wmctrl -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
+    
+for paquete in cifs-utils git wmctrl figlet smbclient diff #ponemos el fostware a instalar separado por espacios
 do
-    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
-    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
-        echo ""
-        echo -e " ${rojo}NO se ha podido instalar (wmctrl), para el control de la pantalla del terminal."
-        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install wmctrl${rojo}"
-        echo -e " No se puede ejecutar el script.${borra_colores}"
-        echo ""
-        exit
-    else #intenta instalar
-        sudo apt install wmctrl -y 2>/dev/null 1>/dev/null 0>/dev/null
-        let "contador=contador+1" #incrementa la variable contador en 1
-        which wmctrl 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
-        wmctrl=$? ##recojemos el 0 o 1 del resultado de which
-    fi
+    which $paquete 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
+    sino=$? #recojemos el 0 o 1 del resultado de which
+    contador="1" #ponemos la variable contador a 1
+    while [ $sino -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
+    do
+        if [ $contador = "4" ] || [ $conexion = "no" ] #si el contador es 4 entre en then y sino en else
+        then #si entra en then es porque el contador es igual a 4 y no ha podido instalar o no hay conexion a internet
+            echo ""
+            echo -e " ${amarillo}NO se ha podido instalar ($paquete).${borra_colores}"
+            echo -e " ${amarillo}Intentelo usted con la orden:${borra_colores}"
+            echo -e " ${rojo}-- sudo apt install $paquete --${borra_colores}"
+            echo -e ""
+            echo -e " ${rojo}No se puede ejecutar el script.${borra_colores}"
+            echo ""
+            exit
+        else #intenta instalar
+            if [ $paquete = "cifs-utils" ]
+            then
+                which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null
+                cifscreds=$?
+                if [ $cifscreds = "0" ]
+                then
+                    break
+                else
+                    echo " Instalando $paquete. Intento $contador/3."
+                    sudo apt install $paquete -y 2>/dev/null 1>/dev/null 0>/dev/null
+                    let "contador=contador+1" #incrementa la variable contador en 1
+                    which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
+                    sino=$? ##recojemos el 0 o 1 del resultado de which
+                fi
+            else
+                echo " Instalando $paquete. Intento $contador/3."
+                sudo apt install $paquete -y 2>/dev/null 1>/dev/null 0>/dev/null
+                let "contador=contador+1" #incrementa la variable contador en 1
+                which $paquete 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
+                sino=$? ##recojemos el 0 o 1 del resultado de which
+            fi
+        fi
 done
-echo -e "- [${verde}ok${borra_colores}] wmctrl, Control de pantalla."
+    echo -e " [${verde}ok${borra_colores}] $paquete."
 
-## figlet, para los baners
-which figlet 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
-figlet=$? #recojemos el 0 o 1 del resultado de which
-contador="1" #ponemos la variable contador a 1
-while [ $figlet -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
-do
-    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
-    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
-        echo ""
-        echo -e " ${rojo}NO se ha podido instalar (figlet), para los baners del script."
-        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install figlet${rojo}"
-        echo -e " No se puede ejecutar el script.${borra_colores}"
-        echo ""
-        exit
-    else #intenta instalar
-        sudo apt install figlet -y 2>/dev/null 1>/dev/null 0>/dev/null
-        let "contador=contador+1" #incrementa la variable contador en 1
-        which figlet 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
-        figlet=$? ##recojemos el 0 o 1 del resultado de which
-    fi
 done
-echo -e "- [${verde}ok${borra_colores}] figlet, Baners de terminal."
+echo -e ""
+echo -e "${verde} Continuamos...${borra_colores}"
+sleep 2
 
-# smbclient, para la restauracion
-which smbclient 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
-smbclient=$? #recojemos el 0 o 1 del resultado de which
-contador="1" #ponemos la variable contador a 1
-while [ $smbclient -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
-do
-    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
-    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
-        echo ""
-        echo -e " ${rojo}NO se ha podido instalar (smbclient), para la restauracion en red."
-        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install figlet${rojo}"
-        echo -e " No se puede ejecutar el script.${borra_colores}"
-        echo ""
-        exit
-    else #intenta instalar
-        sudo apt install smbclient -y 2>/dev/null 1>/dev/null 0>/dev/null
-        let "contador=contador+1" #incrementa la variable contador en 1
-        which smbclient 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
-        smbclient=$? ##recojemos el 0 o 1 del resultado de which
-    fi
-done
-echo -e "- [${verde}ok${borra_colores}] smbclient, Para la restauracion en red."
-
-# cifs-utils, para el montaje de la unidad con mount
-which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
-cifscreds=$? #recojemos el 0 o 1 del resultado de which
-contador="1" #ponemos la variable contador a 1
-while [ $cifscreds -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
-do
-    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
-    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
-        echo ""
-        echo -e " ${rojo}NO se ha podido instalar (cifscreds), para montar la unidad en red."
-        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install figlet${rojo}"
-        echo -e " No se puede ejecutar el script.${borra_colores}"
-        echo ""
-        exit
-    else #intenta instalar
-        sudo apt install cifs-utils -y 2>/dev/null 1>/dev/null 0>/dev/null
-        let "contador=contador+1" #incrementa la variable contador en 1
-        which cifscreds 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
-        cifscreds=$? ##recojemos el 0 o 1 del resultado de which
-    fi
-done
-echo -e "- [${verde}ok${borra_colores}] cifscreds (cifs-utils), Para montar la unidad en red."
-
-
-## diff, comando de comparar
-which diff 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa llamado programa
-diff=$? #recojemos el 0 o 1 del resultado de which
-contador="1" #ponemos la variable contador a 1
-while [ $diff -gt 0 ] #entra en el bicle si variable programa es 0, no lo ha encontrado which
-do
-    if [ $contador = "4" ] #si el contador es 4 entre en then y sino en else
-    then #si entra en then es porque el contador es igual a 4 y no ha podido instalar
-        echo ""
-        echo -e " ${rojo}NO se ha podido instalar (diff), para comparacion de ficheros."
-        echo -e " Intentelo usted con la orden sudo ${amarillo}sudo apt install diff${rojo}"
-        echo -e " No se puede ejecutar el script.${borra_colores}"
-        echo ""
-        exit
-    else #intenta instalar
-        sudo apt install diff -y 2>/dev/null 1>/dev/null 0>/dev/null
-        let "contador=contador+1" #incrementa la variable contador en 1
-        which diff 2>/dev/null 1>/dev/null 0>/dev/null #comprueba si esta el programa en tu sistema
-        diff=$? ##recojemos el 0 o 1 del resultado de which
-    fi
-done
-echo -e "- [${verde}ok${borra_colores}] diff, Para comprara ficheros."
 
 #comprueba aztualiczacion del script
 
@@ -210,9 +295,9 @@ then
     diff /tmp/com_update/codigo/backup-escritorio.sukigsx.sh $ruta/backup-escritorio.sukigsx.sh 2>/dev/null 1>/dev/null 0>/dev/null
     if [ $? = "0" ] 2>/dev/null 1>/dev/null 0>/dev/null
     then
-        echo -e "- [${verde}ok${borra_colores}] script, esta actualizado."
+        echo -e " [${verde}ok${borra_colores}] script, esta actualizado."
     else
-        echo -e "- [${rojo}XX${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 2
+        echo -e " [${rojo}XX${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 2
     fi
     sudo rm -r /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
 else
@@ -222,9 +307,9 @@ else
     diff /tmp/com_update/codigo/backup-escritorio.sukigsx.sh $ruta/backup-escritorio.sukigsx.sh 2>/dev/null 1>/dev/null 0>/dev/null
     if [ $? = "0" ] 2>/dev/null 1>/dev/null 0>/dev/null
     then
-        echo -e "- [${verde}ok${borra_colores}] script, esta actualizado."
+        echo -e " [${verde}ok${borra_colores}] script, esta actualizado."
     else
-        echo -e "- [${rojo}XX${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 3
+        echo -e " [${rojo}XX${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 3
     fi
     sudo rm -r /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
 fi
@@ -233,18 +318,43 @@ echo ""
 echo -e " ${verde}Todo el software correcto.${borra_colores}"
 sleep 3
 
+
+#comprueba si exixte el fichero de configuracion
+if [ -f config_backup_escritorio ]
+then #si existe el fichero de configuracion lo carga
+    source config_backup_escritorio
+    if [ $red = 1 ]
+    then
+        wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
+        clear
+        echo -e "${rosa}"; figlet -c Configurado por red en servisor samba; echo -e "${borra_colores}"
+        echo -e ""
+        echo -e "${amarillo} Introduce la contraseña del servidor samba.${borra_colores}"
+        echo -e ""
+        sudo mkdir $ruta_destino
+        sudo mount -t cifs $direccion_red $ruta_destino -o user=$usuario_red,uid=$usuario_red,gid=$usuario_red 2>/dev/null
+    fi
+else #si no existe carga la funcion de creacion del fichero de configuracion
+    config_backup_escritorio
+fi
+
+
+
 #empieza lo gordo
-ruta_destino="VALOR REQUERIDO"
-unidad_red="VALOR NO REQUERIDO"
+#ruta_destino="VALOR REQUERIDO"
+#unidad_red="VALOR NO REQUERIDO"
 
 #ruta_destino=VARIABLE_VACIAS
 
 #variable de nombre de usuario del sistema cargado
-usuario=$(whoami)
+#usuario=$(whoami)
 #variable de hostname del sistema cargado
-maquina=$(hostname)
+#maquina=$(hostname)
 #variable nombre destino
 nombre_destino="No Montado"
+
+
+
 
 while :
 do
@@ -252,28 +362,27 @@ do
 wmctrl -r :ACTIVE: -b add,maximized_vert,maximized_horz
 clear
 echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
-echo -e "${verde}  Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
+echo -e "${verde} Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
 echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
 echo ""
 echo -e "${verde} Nombre del script --> backup-escritorio.sukigsx.sh ${borra_colores}"
 echo ""
 echo -e "${verde} Descripcion.${borra_colores} Copia/restaura la configuracion de tu escritorio."
 echo ""
-echo -e "${amarillo} Por seguridad la carpeta destino en local, la tiene que crear el usuario."
-echo -e " Si es una carpeta/directorio de red, tendras que montarla en tu sistema, Opcion ( 5 ).${borra_colores}"
+echo -e "${amarillo} Ruta seleccionada -->> ${rojo}$ruta_destino${borra_colores}"
 echo ""
 echo -e "  0.${azul} Actualizar el script.${borra_colores}"
 echo ""
-echo -e "  1.${azul} Introduce la ruta abosoluta de las copias de seguridad. ( Ruta seleccionada -->> ${rojo}$ruta_destino${borra_colores} )."
+echo -e "  1.${azul} Configurar el script.${borra_colores}"
 echo ""
 echo -e "  2.${azul} Listar las copias que tienes en el servidor.${borra_colores}"
+echo -e ""
 echo -e "  3.${azul} Backup (Se eliminara el backup anterior).${borra_colores}"
 echo -e "  4.${azul} Restaurar (Se restaura encima del que tienes).${borra_colores}"
+echo -e ""
 echo -e "  5.${azul} Borra un Backup.${borra_colores}"
 echo ""
-echo -e "  6.${azul} Montar unidad de red, de forma temporal. (${verde} $unidad_red montado en /mnt/$nombre_destino${borra_colores})"
-echo ""
-echo -e "  7.${azul} Manual de ayuda.${borra_colores}"
+echo -e " 90.${azul} Manual de ayuda.${borra_colores}"
 echo ""
 echo -e " 99.${azul} Atras / Salir.${borra_colores}"
 echo ""
@@ -315,41 +424,13 @@ case $opcion in
             ctrl_c;
         fi;;
 
-    1)  #se introduce la variable ruta_detino
-        read -p " Dime la ruta destino -->> " ruta_destino;
-            if [[ -d $ruta_destino && !$ruta_destino ]];
-            then
-                echo ""
-                echo -e " Ruta destino -->>${verde} $ruta_destino ${borra_colores}";
-                echo -e " Usuario ------->>${verde} $usuario ${borra_colores}";
-                echo -e " Maquina ------->>${verde} $maquina ${borra_colores}";
-                echo ""
-                read -p " Es correcto (S/N) -->> " correcto;
-                    if [[ $correcto = "S" || $correcto = "s" ]]
-                        then 
-                            #la ruta destino el usuario marca correcta, sigue el script
-                            echo "";
-                        else
-                            clear
-                            echo -e " ${amarillo}Ruta destino erronea o se ha borrado, ingresa de nuevo la nueva ruta.${borra_colores}";
-                            echo "";
-                            ruta_destino="VALOR REQUERIDO";
-                            echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
-                            read pause;
-                    fi;
-            else
-                clear
-                echo "";
-                echo -e " ${amarillo}La carpeta/directorio${rojo} $ruta_destino${amarillo}.${rojo} NO EXISTE${borra_colores}";
-                echo -e " ${amarillo}Si la ruta es local, creala y ejecuta el script de nuevo.${borra_colores}";
-                echo -e " ${amarillo}Si la ruta es de red, posiblemente no ete montada la unidad.${borra_colores}";
-                echo ""
-                echo -e " ${amarillo}Por seguridad, el usuario tiene que crear la carpeta/directorio.${borra_colores}"
-                echo "";
-                ruta_destino="VALOR REQUERIDO"
-                echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
-                read pause;
-            fi;;
+    1)  #Configurar el script
+        rm config_backup_escritorio 2>/dev/null 1>/dev/null 0>/dev/null
+        sudo umount $ruta_destino 2>/dev/null
+        sudo rmdir $ruta_destino 2>/dev/null
+        config_backup_escritorio
+        ;;
+        
     2) #lista el contenido de ruta_destino
         if [ $ruta_destino ] 2>/dev/null;
         then
@@ -489,8 +570,8 @@ case $opcion in
             then
                 clear;
                 echo -e "${verde} Lista de respaldos en $ruta_destino.${borra_colores}";
-                echo -e "${amarillo}"
-                echo -e "-- ${verde}Listado de backups${borra_colores} --"
+                echo -e ""
+                echo -e "-- ${verde}Listado de backups --${borra_colores}"
                 echo -e "${amarillo}"
                 ls -l $ruta_destino | awk '{print "       " $9}';
                 echo -e "${borra_colores}"
@@ -533,62 +614,7 @@ case $opcion in
             read pause;
         fi;;
     
-    6)  #montar unidad temporal
-        #comienza montar temporal
-        clear
-        echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
-        echo -e "${verde}  Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
-        echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
-        echo ""
-        echo -e "${verde} Nombre del script --> backup-escritorio.sukigsx.sh ${borra_colores}"
-        echo -e ""
-        echo -e "${verde} Funcionamiento.${borra_colores} Monta una unidad de red de forma TEMPORAL en tu distribucion de linux dentro de la ruta /mnt"
-        echo ""
-        echo -e " ${azul} Te pedira la ruta a absoluta a montar, ej, //192.168.1.100/direcion_la_carpeta__montar."
-        echo -e " ${azul} Te pedira el nombre de usuario, ej oscar."
-        echo -e " ${azul} Te pedira el nombre de carpeta destino y se montara en /mnt/nombre_de_carpeta."
-        echo -e "${borra_colores}"
-        echo -ne "${azul} Introduce ${verde}UNIDAD DE RED${azul} a montar con su direccion absoluta >> ${borra_colores}"; read unidad_carpeta
-        echo -ne "${azul} Dime ${verde}NOMBRE DE USUARIO${azul} de la unidad de red >> ${borra_colores}"; read unidad_usuario
-        echo -ne "${azul} Ingresa ${verde}PASSWORD${azul} del Usuario de la Unidad de red >> ${borra_colores}"; read unidad_password
-        echo -ne "${azul} Asigna ${verde}NOMBRE DE CARPETA${azul} para destino /mnt >> ${borra_colores}"; read  nombre_destino
-        echo ""
-        echo -e "${amarillo}  Direccion a montar -->>${verde} $unidad_carpeta ${borra_colores}"
-        echo -e "${amarillo}  Usuario            -->>${verde} $unidad_usuario ${borra_colores}"
-        echo -e "${amarillo}  Password           -->>${verde} NO TE LO MUESTRO ${borra_colores}"
-        echo -e "${amarillo}  Carpeta destino    -->>${verde} $nombre_destino ${borra_colores}"
-        echo ""
-        echo -ne "${azul} Es correpto (S/N en MAYUSCULA) ? ${amarillo}-->>${borra_colores} "; read correcto
-        
-        smbclient -U $unidad_usuario%$unidad_password -L $unidad_carpeta 0>/dev/null 2>/dev/null 1>/dev/null
-        if [[ $? == 0 ]] && [[ $correcto = "S" ]] 2>/dev/null
-        then
-            sudo mkdir /mnt/$nombre_destino
-            sudo mount -t cifs $unidad_carpeta /mnt/$nombre_destino -o user=$unidad_usuario,uid=$unidad_usuario,gid=$unidad_usuario 2>/dev/null
-            if [ $? = 0 ]
-            then
-                echo ""
-                echo -e " ${verde}Unidad montada, pulsa una tecla para continuar${borra_colores}"
-                unidad_red=$unidad_carpeta
-                read pause
-            else
-                echo ""
-                echo -e " ${rojo}NO ha sido posible montar la unidad.${borra_colores}"
-                echo ""
-                echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"unidad_red="VALOR NO REQUERIDO"
-                read pause
-            fi
-        else
-            clear
-            echo ""
-            echo -e "${amarillo} Has seleccionado N o NO hay acceso a la direccion absoluta.${borra_colores}"
-            echo -e "${amarillo} Saliendo. Selecciona opcion (5) si quieres internar de nuevo.${borra_colores}"
-            echo ""
-            echo -e " ${verde}Pulsa una tecla para continuar...${borra_colores}"
-            read pause
-        fi;;
-
-    7)  #manual de funcionamiento
+    90)  #manual de funcionamiento
         clear
         echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
         echo -e "${verde}  Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
@@ -598,14 +624,13 @@ case $opcion in
         echo ""
         echo -e "${azul}Opcion 0.${borra_colores} Actualiza el script."
         echo ""
-        echo -e "${azul}Opcion 1.${borra_colores} Introduce la ruta de las copias de seguridad.";
-        echo "          Se refiere a que hay que introducir la ruta en donde buscara o realizara las copias de seguridad.";
-        echo "          Puede ser una ubicacion en local o en red, si es en red hay que montar la ruta en el sistema con la opcion 5.";
-        echo "          El script comprobara la ruta indicada. El servidor de red tiene que tener habilitado el protocolo samba (smb).";
+        echo -e "${azul}Opcion 1.${borra_colores} Configurar el script.";
+        echo "          Crea un fichero de configuracion (config_backup_escritorio), donde almacena los datos para crear backup";
+        echo "          y las restauraciones de tu configuracion de escritorio.";
         echo "";
         echo -e "${azul}Opcion 2.${borra_colores} Listar las copias de seguridad.";
-        echo "          Realizara un ls sobre la ruta introducida en la opcion 1 y podras ver las copias de escritorio que";
-        echo "          existan en esa ruta, tambien es donde realizara las nuevas copias.";
+        echo "          Realizara un (ls) sobre la ruta introducida en la opcion 1 y podras ver las copias de configuracion de";
+        echo "          tu escritorio que existan en esa ruta, tambien es donde realizara las nuevas copias.";
         echo "";
         echo -e "${azul}Opcion 3.${borra_colores} Realizar copia o backup.";
         echo "          Este pasao creara una copia de todos los datos de tu escritorio a la ruta indicada en opcion 1";
@@ -617,16 +642,12 @@ case $opcion in
         echo "          o backup no la encontrara y no la podra restaurar.";
         echo "";
         echo -e "${azul}Opcion 5.${borra_colores} Borrar un Backup.";
-        echo "          Te lista los backups que tienes y te pregunta cual quieres.";
+        echo "          Te lista los backups que tienes y te pregunta cual quieres borrar.";
         echo "";
-        echo -e "${azul}Opcion 6.${borra_colores} Montar unidad de red de forma temporal.";
-        echo "          Esta opcion te permite montar una unidad de red en tu sistema para poder realizar un backup o";
-        echo "          restauracion en tu rscritorio, para ello tienes que saber:";
-        echo "              - Comprobara el software necesario (cifs-utils y smbclient), sino estan instalados, los instalara.";
-        echo "              - La ruta absoluta de tu servidor, ej //192.168.0.1/servidor/copia_escritorio.";
-        echo "              - El nombre de usuario del servidor, ej pepito.";
-        echo "              - La password del servidor y tener permisos, ej 12345.";
-        echo "              - Y la direccion de la carpeta destino, en donde se montara en tu sistema. ej //tmp/copia/.";
+        echo -e "${azul}Opcion 90.${borra_colores} Ayuda, lo que estas viendo.";
+        echo "";
+        echo -e "${azul}Opcion 99.${borra_colores} Salir/atras.";
+        echo "";
         read pause;;
         
     99) #salir/atras
