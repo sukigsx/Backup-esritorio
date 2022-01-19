@@ -321,8 +321,6 @@ echo -e "${verde} Continuamos...${borra_colores}"
 sleep 2
 
 
-#comprueba aztualiczacion del script  https://github.com/sukigsx/Backup-esritorio.git
-
 #comprueba actualiczacion del script
 
 repositorio="https://github.com/sukigsx/Backup-esritorio.git" #variable de la direccion del repositorio del script
