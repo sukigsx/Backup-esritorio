@@ -57,8 +57,6 @@ echo -e "${verde} Descripcion.${borra_colores} Copia/restaura la configuracion d
 echo -e ""
 echo -e " Configuracion del script"
 echo -e ""
-echo -e "  0.${azul} Actualizar el script.${borra_colores}"
-echo ""
 echo -e "  1. ${azul}Copia de seguridad en local.${borra_colores}"
 echo -e "  2. ${azul}Copia de seguridad en red por samba.${borra_colores}"
 echo -e ""
@@ -67,41 +65,6 @@ echo -e " 99. ${azul}Salir.${borra_colores}"
 echo -e ""
 read -p " Seleciona una opcion -> " opcion
 case $opcion in
-
-    0)  #actualiza el script
-        if [ -e /usr/bin/backup-escritorio.sukigsx.sh ] #comprueba si se ha instalado el script con el deb, comprobando el fichero /usr/bin/inicio.ocamlfuse.sh
-        then
-            ruta="/usr/bin"
-            cd /tmp
-            mkdir temporal_update
-            git clone https://github.com/sukigsx/Backup-esritorio.git /tmp/temporal_update
-            cd /tmp/temporal_update/codigo/
-            sudo chmod +x $ruta/*.sukigsx.sh
-            sudo cp -r /tmp/temporal_update/codigo/* $ruta
-            sudo rm -r /tmp/temporal_update
-            clear
-            echo "";
-            echo -e "${verde} Script actualizado, tienes que reiniciar el script para ver los cambios.${borra_colores}";
-            echo "";
-            read -p " Pulsa una tecla para continuar." pause
-            ctrl_c;
-        else
-            ruta=$(pwd)
-            cd /tmp
-            mkdir temporal_update
-            git clone https://github.com/sukigsx/Backup-esritorio.git /tmp/temporal_update
-            cd /tmp/temporal_update/codigo/
-            sudo chmod +x $ruta/*.sukigsx.sh
-            sudo cp -r /tmp/temporal_update/codigo/* $ruta
-            sudo rm -r /tmp/temporal_update
-            clear
-            echo "";
-            echo -e "${verde} Script actualizado, tienes que reiniciar el script para ver los cambios.${borra_colores}";
-            echo "";
-            read -p " Pulsa una tecla para continuar." pause
-            ctrl_c;
-        fi;;
-
     1)  #copia de seguridad en local
         echo -e ""
         read -p " Dime la carpeta/directorio destino (/home/$(whoami)/carpeta_destino) -> " carpeta_destino;
@@ -321,42 +284,34 @@ echo -e "${verde} Continuamos...${borra_colores}"
 sleep 2
 
 
-#comprueba actualiczacion del script
+#comprueba aztualiczacion del script
 
-repositorio="https://github.com/sukigsx/Backup-esritorio.git" #variable de la direccion del repositorio del script
-if wget -S --spider $repositorio &>/dev/null; #comprueba que exista el repositorio
+#comprueba aztualiczacion del script
+if [ -e /usr/bin/backup-escritorio.sukigsx.sh ] #comprueba si se ha instalado el script con el deb, comprobando el fichero /usr/bin/inicio.sukigsx.sh
 then
-        if [ -e /usr/bin/$0 ] #comprueba si se ha instalado el script con el deb, comprobando el fichero /usr/bin/nombre_del_script.sh
-        then
-            ruta="/usr/bin"
-            mkdir /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
-            git clone $repositorio /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
-            diff /tmp/com_update/codigo/$0 $ruta/$0 2>/dev/null 1>/dev/null 0>/dev/null
-            if [ $? = "0" ] 2>/dev/null 1>/dev/null 0>/dev/null
-            then
-                echo -e " [${verde}ok${borra_colores}] script, esta actualizado."
-            else
-                echo -e " [${rojo}X${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 2
-            fi
-            rm -r /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
-        else
-            ruta=$(pwd)
-            mkdir /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
-            git clone $repositorio /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
-            diff /tmp/com_update/codigo/$0 $ruta/$0 2>/dev/null 1>/dev/null 0>/dev/null
-            if [ $? = "0" ] 2>/dev/null 1>/dev/null 0>/dev/null
-            then
-                echo -e " [${verde}ok${borra_colores}] script, esta actualizado."
-            else
-                echo -e " [${rojo}X${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 3
-            fi
-            rm -r /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
-        fi
+    ruta="/usr/bin"
+    mkdir /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
+    git clone https://github.com/sukigsx/Backup-esritorio.git /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
+    diff /tmp/com_update/codigo/backup-escritorio.sukigsx.sh $ruta/backup-escritorio.sukigsx.sh 2>/dev/null 1>/dev/null 0>/dev/null
+    if [ $? = "0" ] 2>/dev/null 1>/dev/null 0>/dev/null
+    then
+        echo -e " [${verde}ok${borra_colores}] script, esta actualizado."
+    else
+        echo -e " [${rojo}XX${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 2
+    fi
+    sudo rm -r /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
 else
-        echo ""
-        echo -e " ${amarillo}El repositorio (${rojo} $repositorio ${amarillo}), NO esta accesible.${borra_colores}"
-        echo -e " ${amarillo}Imposible la comprobacion de actualizaciones del script.${borra_colores}"
-        echo ""
+    ruta=$(pwd)
+    mkdir /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
+    git clone https://github.com/sukigsx/Backup-esritorio.git /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
+    diff /tmp/com_update/codigo/backup-escritorio.sukigsx.sh $ruta/backup-escritorio.sukigsx.sh 2>/dev/null 1>/dev/null 0>/dev/null
+    if [ $? = "0" ] 2>/dev/null 1>/dev/null 0>/dev/null
+    then
+        echo -e " [${verde}ok${borra_colores}] script, esta actualizado."
+    else
+        echo -e " [${rojo}XX${borra_colores}] ${amarillo}script NO actualizado, puedes actualizarlo en la opcion ( 0 ).${borra_colores}";sleep 3
+    fi
+    sudo rm -r /tmp/com_update 2>/dev/null 1>/dev/null 0>/dev/null
 fi
 
 echo ""
