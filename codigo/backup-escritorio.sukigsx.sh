@@ -57,6 +57,8 @@ echo -e "${verde} Descripcion.${borra_colores} Copia/restaura la configuracion d
 echo -e ""
 echo -e " Configuracion del script"
 echo -e ""
+echo -e "  0. ${azul}Actualizar el script.${borra_colores}"
+echo -e ""
 echo -e "  1. ${azul}Copia de seguridad en local.${borra_colores}"
 echo -e "  2. ${azul}Copia de seguridad en red por samba.${borra_colores}"
 echo -e ""
@@ -65,6 +67,41 @@ echo -e " 99. ${azul}Salir.${borra_colores}"
 echo -e ""
 read -p " Seleciona una opcion -> " opcion
 case $opcion in
+
+    0)  #actualiza el script
+        if [ -e /usr/bin/backup-escritorio.sukigsx.sh ] #comprueba si se ha instalado el script con el deb, comprobando el fichero /usr/bin/inicio.ocamlfuse.sh
+        then
+            ruta="/usr/bin"
+            cd /tmp
+            mkdir temporal_update
+            git clone https://github.com/sukigsx/Backup-esritorio.git /tmp/temporal_update
+            cd /tmp/temporal_update/codigo/
+            sudo chmod +x $ruta/*.sukigsx.sh
+            sudo cp -r /tmp/temporal_update/codigo/* $ruta
+            sudo rm -r /tmp/temporal_update
+            clear
+            echo "";
+            echo -e "${verde} Script actualizado, tienes que reiniciar el script para ver los cambios.${borra_colores}";
+            echo "";
+            read -p " Pulsa una tecla para continuar." pause
+            ctrl_c;
+        else
+            ruta=$(pwd)
+            cd /tmp
+            mkdir temporal_update
+            git clone https://github.com/sukigsx/Backup-esritorio.git /tmp/temporal_update
+            cd /tmp/temporal_update/codigo/
+            sudo chmod +x $ruta/*.sukigsx.sh
+            sudo cp -r /tmp/temporal_update/codigo/* $ruta
+            sudo rm -r /tmp/temporal_update
+            clear
+            echo "";
+            echo -e "${verde} Script actualizado, tienes que reiniciar el script para ver los cambios.${borra_colores}";
+            echo "";
+            read -p " Pulsa una tecla para continuar." pause
+            ctrl_c;
+        fi;;
+
     1)  #copia de seguridad en local
         echo -e ""
         read -p " Dime la carpeta/directorio destino (/home/$(whoami)/carpeta_destino) -> " carpeta_destino;
