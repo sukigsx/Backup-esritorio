@@ -50,7 +50,7 @@ clear
 echo ""
 echo -e "${rosa}"; figlet -c sukigsx; echo -e "${borra_colores}"
 echo -e "${verde} Diseñado por sukigsx / Contacto:  sukisx.mbsistemas@gmail.com${borra_colores}"
-echo -e "${verde}                                    https://mbsistemas.ddns.net${borra_colores}"
+echo -e "${verde}                                   https://mbsistemas.ddns.net${borra_colores}"
 echo -e "${verde} Nombre del script --> backup-escritorio.sukigsx.sh ${borra_colores}"
 echo ""
 echo -e "${verde} Descripcion.${borra_colores} Copia/restaura la configuracion de tu escritorio."
