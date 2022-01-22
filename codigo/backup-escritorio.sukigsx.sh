@@ -55,7 +55,7 @@ echo -e "${verde} Nombre del script --> backup-escritorio.sukigsx.sh ${borra_col
 echo ""
 echo -e "${verde} Descripcion.${borra_colores} Copia/restaura la configuracion de tu escritorio."
 echo -e ""
-echo -e " Configuracion del scripttttttttt"
+echo -e " Configuracion del script"
 echo -e ""
 echo -e "  0. ${azul}Actualiza el script.${borra_colores}"
 echo ""
